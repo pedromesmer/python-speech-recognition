@@ -1,16 +1,9 @@
 '''
-Importante!
-Pacotes necessários:
-    > pip install SpeechRecoginition
-    > pip install pyaudio
-        Caso esse der errado:
-        > pip install pipwin
-        > pip install pyaudio
-
     Desenvolvido por Pedro Mesmer
 '''
 
 import speech_recognition as sr
+from expressions import *
 
 # inicializa o microfone
 rec = sr.Recognizer()
@@ -21,9 +14,9 @@ def listen():
         # escutando
         frase = ''
         
-        print('Para encerrar, diga \'encerrar programa\'')
+        print('Para encerrar, diga \'Encerrar\'')
 
-        while ((frase.lower() != 'encerrar programa') or (frase.lower() != 'sair')):
+        while (verifyExpression(frase)):
             try:
                 audio = rec.listen(source)
                 frase = rec.recognize_google(audio, language='pt-BR')
