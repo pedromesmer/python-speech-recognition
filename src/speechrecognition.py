@@ -3,7 +3,7 @@
 '''
 
 import speech_recognition as sr
-from expressions import *
+from verify_expressions import *
 
 # inicializa o microfone
 rec = sr.Recognizer()
