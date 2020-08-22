@@ -12,9 +12,17 @@ Realizar os seguintes comandos antes da inicialização:
 
 ```pip install SpeechRecoginition```
 ### Linux
-```pip install pyaudio```
+```
+pip install pyaudio
+sudo pip3 install --upgrade speechrecognition
+sudo apt-get install libasound-dev portaudio19-dev libportaudio2 libportaudiocpp0
+sudo apt-get install ffmpeg libav-tools
+sudo pip3 install pyaudio
+```
+
 ### Windows
 ```
+pip install pyaudio
 pip install pipwin
 pip install pyaudio
 ```

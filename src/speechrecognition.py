@@ -19,7 +19,7 @@ def listen():
             try:
                 rec.adjust_for_ambient_noise(source)
                 # escutando
-                audio = rec.listen(source, timeout=None)
+                audio = rec.listen(source, timeout=None, phrase_time_limit=5)
                 #print('> ouviu')
                 frase = rec.recognize_google(audio, language='pt-BR')
                 print(frase)
