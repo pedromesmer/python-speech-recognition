@@ -1,11 +1,11 @@
-finish = [
-    'sair', 'finalizar', 'acabar', 'terminar', 'encerrar'
-]
+import connect_db as db
 
-def verifyExpression(expression, command = finish):
+def verifyExpression(expression, action = 'finish'):
     expression = expression.lower()
     word = expression.split()
     #print(word) # lista de palavras da frase
+    command = db.readExpressions(action)
+
     for i in command:
         for j in word:                
             # por enquanto, a verificação é apenas na variável finish

@@ -4,7 +4,7 @@ import os
 def realPath():
     return os.path.dirname(os.path.realpath(__file__))
 
-def create_db():
+def create():
     # o python não assume o caminho do arquivo como raiz, essa função faz esse 'ajuste técnico'
     filePath = realPath()
 
@@ -24,16 +24,12 @@ def create_db():
 
     conn.close()
 
-def insertExpressions_db(expression):
+def insertExpressions(expression):
 
     filePath = realPath()
 
     conn = sqlite3.connect(filePath  + '/../db/expressions.db') # banco criado na pasta ../db
     cursor = conn.cursor()
-
-    finish = [
-    'sair', 'finalizar', 'acabar', 'terminar', 'encerrar'
-    ]
 
     cursor.execute("""
     INSERT INTO finish (expression)
@@ -44,31 +40,32 @@ def insertExpressions_db(expression):
     print('> Dados cadastrados com sucesso!')
     conn.close()
 
-def readExpressions_db():
+def readExpressions(table):
     filePath = realPath()
     conn = sqlite3.connect(filePath  + '/../db/expressions.db') # banco criado na pasta ../db
     cursor = conn.cursor()
+    expressions = []
 
     cursor.execute("""
-    SELECT * FROM finish;
-    """)
-    
+    SELECT * FROM {};
+    """.format(table))
+
+    # percorre todos os itens da tabela e salva na lista
     for line in cursor.fetchall():
-        # print(line[0])
-        if (line[0] == 'finalizar'):
-            print('match')
+        expressions.append(line[0])
 
     conn.close()
+    return expressions
 
 
-create_db()
-text = ''
+#create()
 # gambiarra pra cadastro
 """
+text = ''
 while (True):
     text = input('Digite a expressão para cadastrar, 0 para finalizar: ') 
     if (text == '0'):
         break
-    insertExpressions_db(text)
+    insertExpressions(text)
 """
-readExpressions_db()
+#readExpressions()
