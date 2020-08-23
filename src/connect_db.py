@@ -8,12 +8,13 @@ def create():
     # o python não assume o caminho do arquivo como raiz, essa função faz esse 'ajuste técnico'
     filePath = realPath()
 
-    conn = sqlite3.connect(filePath  + '/../db/expressions.db') # banco criado na pasta ../db
+    conn = sqlite3.connect(filePath  + '/../db/actions.db') # banco criado na pasta ../db
     cursor = conn.cursor()
     try:
         cursor.execute("""
-        CREATE TABLE finish (
-            expression TEXT NOT NULL
+        CREATE TABLE actions (
+            expression TEXT NOT NULL,
+            action TEXT NOT NULL
         )
         """)
     except sqlite3.OperationalError as err:
@@ -24,48 +25,54 @@ def create():
 
     conn.close()
 
-def insertExpressions(expression):
+def insertExpressions(expression, action):
 
     filePath = realPath()
 
-    conn = sqlite3.connect(filePath  + '/../db/expressions.db') # banco criado na pasta ../db
+    conn = sqlite3.connect(filePath  + '/../db/actions.db') # banco criado na pasta ../db
     cursor = conn.cursor()
 
     cursor.execute("""
-    INSERT INTO finish (expression)
-    VALUES (?)
-    """, [expression])
+    INSERT INTO actions (expression, action)
+    VALUES (?,?)
+    """, (expression, action))
 
     conn.commit()
     print('> Dados cadastrados com sucesso!')
     conn.close()
 
-def readExpressions(table):
+def readExpressions(table = 'actions'):
     filePath = realPath()
-    conn = sqlite3.connect(filePath  + '/../db/expressions.db') # banco criado na pasta ../db
+    conn = sqlite3.connect(filePath  + '/../db/actions.db') # banco criado na pasta ../db
     cursor = conn.cursor()
-    expressions = []
 
     cursor.execute("""
     SELECT * FROM {};
     """.format(table))
 
-    # percorre todos os itens da tabela e salva na lista
-    for line in cursor.fetchall():
-        expressions.append(line[0])
+    expressions = cursor.fetchall()
 
+    # percorre todos os itens da tabela e salva na lista
+    # print(cursor.fetchall())
+    for line in expressions:
+        print(line)   
+    
     conn.close()
     return expressions
 
 
-#create()
+create()
 # gambiarra pra cadastro
+
+#text = ''
 """
-text = ''
 while (True):
-    text = input('Digite a expressão para cadastrar, 0 para finalizar: ') 
+    sair = input('Digite 0 para sair: ')
     if (text == '0'):
         break
-    insertExpressions(text)
+    expression = input('Expressão: ')
+    action = input('Ação: ')
+
+    insertExpressions(expression, action)
 """
-#readExpressions()
+readExpressions()
