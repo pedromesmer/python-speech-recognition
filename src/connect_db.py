@@ -54,21 +54,20 @@ def readExpressions(table = 'actions'):
 
     # percorre todos os itens da tabela e salva na lista
     # print(cursor.fetchall())
+    """
     for line in expressions:
         print(line)   
-    
+    """
     conn.close()
     return expressions
 
 
 create()
 # gambiarra pra cadastro
-
-#text = ''
 """
 while (True):
     sair = input('Digite 0 para sair: ')
-    if (text == '0'):
+    if (sair == '0'):
         break
     expression = input('Expressão: ')
     action = input('Ação: ')
