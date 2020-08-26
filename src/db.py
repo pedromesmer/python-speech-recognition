@@ -13,6 +13,7 @@ def create():
     try:
         cursor.execute("""
         CREATE TABLE actions (
+            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
             expression TEXT NOT NULL,
             action TEXT NOT NULL
         )
@@ -41,28 +42,29 @@ def insertExpression(expression, action):
     print('> Dados cadastrados com sucesso!')
     conn.close()
 
-def deleteExpression(expression):
+def deleteExpression(id):
     
     filePath = realPath()
 
     conn = sqlite3.connect(filePath + '/../db/actions.db')
     cursor = conn.cursor()
 
+    cursor.execute("""
+    DELETE FROM actions
+    WHERE id = ?
+    """, id)
+    conn.commit()
+    """
     try:
-        cursor.execute("""
-        DELETE FROM actions
-        WHERE expression = ?
-        """, expression)
-        conn.commit()
     except:
         print('Ocorreu um erro!\nA expressão foi digitada corretamente?\n')
-
+    """
     print('> Expressão deletada com sucesso!')
     conn.close()
     
 
 
-def readExpressions(table = 'actions'):
+def readExpression(table = 'actions'):
     filePath = realPath()
     conn = sqlite3.connect(filePath  + '/../db/actions.db') # banco criado na pasta ../db
     cursor = conn.cursor()
@@ -85,39 +87,67 @@ def readExpressions(table = 'actions'):
 # Menu do DB
 
 def menuDB():
-    print('Menu do banco de dados - SpeechRecognition' +
-        '1 - Criação do banco' +
-        '2 - Adição de expressão e função atribuida' +
-        '3 - Exclusão de expressão do banco' +
-        '4 - Visualizar tudo' +
-        '0 - Voltar ao menu inicial')
+    opt = 0
+    print('Menu do banco de dados - SpeechRecognition\n' +
+        '1 - Criação do banco\n' +
+        '2 - Adição de expressão e função atribuida\n' +
+        '3 - Exclusão de expressão do banco\n' +
+        '4 - Visualizar tudo\n' +
+        '0 - Voltar ao menu inicial\n')
     try:
-        opt = int(input('Inrira a opção: '))
+        opt = int(input('Insira a opção: '))
     except:
-        print('Tente novamente!\n')
+        print('Opção inválida!\n')
         menuDB()
     
-    if (opt == 1):
+    if (opt == 1): # criar banco
         create()
-    elif (opt == 2):
+    elif (opt == 2): # cadastrar expressão
+        primeiro = True
         while (True):
-            expression = input('Expressão: ')
+            
+            if (not primeiro):
+                sair = input('\nNovo cadastro? (Sim / S / Yes / Y): ')
+                if ((sair.lower() == 'sim') or (sair.lower() == 'yes') or (sair.lower() == 's') or (sair.lower() == 'y')):
+                    pass
+                else:
+                    print('Encerrando cadastro...')
+                    break
+
+            expression = input('\nExpressão: ')
             action = input('Ação: ')
-            sair = input('Cadastrar? (Sim / S / Yes / Y)')
+            sair = input('Confirma? (Sim / S / Yes / Y): ')
             if ((sair.lower() == 'sim') or (sair.lower() == 'yes') or (sair.lower() == 's') or (sair.lower() == 'y')):
                 insertExpression(expression, action)
+                primeiro = False
             else:
-                print('Saindo do cadastro...')
+                print('Encerrando cadastro...')
                 break
+        menuDB()
 
-    elif (opt == 3):
-        #deleteExpression(expression)
-        pass
-    elif (opt == 4):
+    elif (opt == 3): # deletar expressão
+        
+        try:
+            expression = int(input('Insira o ID da expressão: '))
+        except:
+            print('A opção so aceita inteiros!\n')
+            menuDB()
+
+        sair = input('Confirma? (Sim / S / Yes / Y): ')
+        if ((sair.lower() == 'sim') or (sair.lower() == 'yes') or (sair.lower() == 's') or (sair.lower() == 'y')):
+            deleteExpression(expression)
+        else:
+            print('Fim da exclusão...\n')
+        menuDB()
+
+    elif (opt == 4): # ver todas as expressões e IDs
+        print('Função em desenvolvimento')
         #viewAll()
         pass
-    elif (opt == 0):
+    elif (opt == 0): # menu principal
         print('Saindo...')
     else:
         print('Opção inválida!\n')
         menuDB()
+
+menuDB()

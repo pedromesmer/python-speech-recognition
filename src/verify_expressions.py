@@ -16,12 +16,12 @@ def verifyExpression(phase, action = 'action'):
 
     for con in command:
         for wor in word:                
-            if (wor == con[0]): # se a palavra está cadastrada no banco de verbos, coluna 0
+            if (wor == con[1]): # se a palavra está cadastrada no banco de verbos, coluna 0
                 
-                print ('> match: ' + con[0])
-                print ('> comando: ' + con[1])
+                print ('> match: ' + con[1])
+                print ('> comando: ' + con[2])
                 
-                exec('functions.'+con[1]+'()')
+                exec('functions.'+con[2]+'()')
                                 
                 # Criar uma função para cada action, no arquivo functions
                 # A frase pode ser passada na função como parametro, inteira ou refinada
