@@ -27,7 +27,6 @@ def create():
     
     print('> Tabela criada com sucesso!')
     conn.close()
-
     wait()
 
 def insertExpression(expression, action):
@@ -122,7 +121,7 @@ def viewAll(table = 'actions'):
 
 
 # Menu do DB
-
+"""
 def menuDB():
     opt = 0
     print('Menu do banco de dados - SpeechRecognition\n' +
@@ -190,5 +189,5 @@ def menuDB():
     else:
         print('Opção inválida!\n')
         menuDB()
+"""
 
-menuDB()
