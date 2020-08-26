@@ -4,6 +4,9 @@ import os
 def realPath():
     return os.path.dirname(os.path.realpath(__file__))
 
+def wait(text = '\nTecle Enter para continuar'):
+    input(text)
+
 def create():
     # o python não assume o caminho do arquivo como raiz, essa função faz esse 'ajuste técnico'
     filePath = realPath()
@@ -23,8 +26,9 @@ def create():
         return
     
     print('> Tabela criada com sucesso!')
-
     conn.close()
+
+    wait()
 
 def insertExpression(expression, action):
 
@@ -42,6 +46,7 @@ def insertExpression(expression, action):
     print('> Dados cadastrados com sucesso!')
     conn.close()
 
+
 def deleteExpression(id):
     
     filePath = realPath()
@@ -49,20 +54,24 @@ def deleteExpression(id):
     conn = sqlite3.connect(filePath + '/../db/actions.db')
     cursor = conn.cursor()
 
-    cursor.execute("""
-    DELETE FROM actions
-    WHERE id = ?
-    """, id)
-    conn.commit()
-    """
+    
     try:
+        cursor.execute("""
+        DELETE FROM actions
+        WHERE id = ?
+        """, (id,))
     except:
         print('Ocorreu um erro!\nA expressão foi digitada corretamente?\n')
-    """
-    print('> Expressão deletada com sucesso!')
+        conn.close()
+        wait()
+        return
+
+    conn.commit()
     conn.close()
     
+    print('> Expressão deletada com sucesso!')
 
+    wait()
 
 def readExpression(table = 'actions'):
     filePath = realPath()
@@ -108,7 +117,7 @@ def viewAll(table = 'actions'):
     
     conn.close()
 
-    input('\nTecle Enter para continuar...')
+    wait()
     
 
 
@@ -154,9 +163,14 @@ def menuDB():
         menuDB()
 
     elif (opt == 3): # deletar expressão
+        expression = -1
         
+        view = input('Deseja ver a lista de IDs?\n(Sim / S / Yes / Y): ')
+        if ((view.lower() == 'sim') or (view.lower() == 'yes') or (view.lower() == 's') or (view.lower() == 'y')):
+            viewAll()
+
         try:
-            expression = int(input('Insira o ID da expressão: '))
+            expression = int(input('Insira o ID da expressão para exclusão: '))
         except:
             print('A opção so aceita inteiros!\n')
             menuDB()
