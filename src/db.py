@@ -84,6 +84,34 @@ def readExpression(table = 'actions'):
     conn.close()
     return expressions
 
+def viewAll(table = 'actions'):
+    filePath = realPath()
+    conn = sqlite3.connect(filePath  + '/../db/actions.db') # banco criado na pasta ../db
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT * FROM {};
+    """.format(table))
+
+    expressions = cursor.fetchall()
+
+    # percorre todos os itens da tabela e salva na lista
+    # print(cursor.fetchall())
+    print('ID','Expressão','Função', sep = '\t')
+    print('------------------------------')
+    for line in expressions:
+        print(line[0], end = '\t')
+        print(line[1], end = '')
+        for space in range((9 - len(line[1]) + 7)):
+            print(' ', end= '')
+        print(line[2])   
+    
+    conn.close()
+
+    input('\nTecle Enter para continuar...')
+    
+
+
 # Menu do DB
 
 def menuDB():
@@ -141,9 +169,8 @@ def menuDB():
         menuDB()
 
     elif (opt == 4): # ver todas as expressões e IDs
-        print('Função em desenvolvimento')
-        #viewAll()
-        pass
+        viewAll()
+        menuDB()
     elif (opt == 0): # menu principal
         print('Saindo...')
     else:
