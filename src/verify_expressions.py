@@ -1,11 +1,11 @@
-import connect_db as db
+import db
 import functions 
 
 def verifyExpression(phase, action = 'action'):
     phase = phase.lower()
     word = phase.split()
     
-    command = db.readExpressions()
+    command = db.readExpression()
 
     """
     Funções cadastradas (coluna 1 do banco):
